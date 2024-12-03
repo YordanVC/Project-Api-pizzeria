@@ -21,14 +21,21 @@ public class PizzaService {
 //    }
     //Forma con Repository
     private PizzaRepository pizzaRepository;
+
     @Autowired
     public PizzaService(PizzaRepository pizzaRepository) {
         this.pizzaRepository = pizzaRepository;
     }
+    //metodo que retorna todas las pizzas
     public List<PizzaEntity> getAll(){
         return this.pizzaRepository.findAll();
     }
+    //metodo que retorna una piza buscado por id.
     public PizzaEntity getPizza(int idPizza){
         return this.pizzaRepository.findById(idPizza).orElse(null);
+    }
+    //metodo para guardar una pizza
+    public PizzaEntity save(PizzaEntity pizza){
+        return this.pizzaRepository.save(pizza);
     }
 }
