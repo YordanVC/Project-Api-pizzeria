@@ -38,4 +38,9 @@ public class PizzaService {
     public PizzaEntity save(PizzaEntity pizza){
         return this.pizzaRepository.save(pizza);
     }
+
+    //Verificar si existe o no una pizza
+    public boolean exists(int idPizza){
+        return this.pizzaRepository.existsById(idPizza);
+    }
 }
