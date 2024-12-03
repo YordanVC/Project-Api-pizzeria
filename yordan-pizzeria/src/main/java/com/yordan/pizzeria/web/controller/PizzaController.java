@@ -51,6 +51,7 @@ public class PizzaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") int idPizza){
         if(this.pizzaService.exists(idPizza)){
+            this.pizzaService.delete(idPizza);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
