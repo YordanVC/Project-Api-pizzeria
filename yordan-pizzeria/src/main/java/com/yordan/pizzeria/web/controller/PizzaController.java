@@ -46,4 +46,13 @@ public class PizzaController {
         }
         return ResponseEntity.badRequest().build();//si ya existe parar la peticion.
     }
+
+    //Eliminar una pizza
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") int idPizza){
+        if(this.pizzaService.exists(idPizza)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }
