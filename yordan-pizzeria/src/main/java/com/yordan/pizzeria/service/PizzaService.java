@@ -20,7 +20,7 @@ public class PizzaService {
 //        return this.jdbcTemplate.query("SELECT * FROM pizza WHERE available=0",new BeanPropertyRowMapper<>(PizzaEntity.class));
 //    }
     //Forma con Repository
-    private PizzaRepository pizzaRepository;
+    private final PizzaRepository pizzaRepository;
 
     @Autowired
     public PizzaService(PizzaRepository pizzaRepository) {
