@@ -39,8 +39,11 @@ public class PizzaController {
 
     //listar todas las pizzas activas
     @GetMapping("/available")
-    public ResponseEntity<List<PizzaEntity>> getAvailable(){
-        return new ResponseEntity<>(pizzaService.getAvailable(), HttpStatus.OK);
+    public ResponseEntity<Page<PizzaEntity>> getAvailable(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "6") int elements,
+                                                          @RequestParam(defaultValue = "price") String sortBy,
+                                                          @RequestParam(defaultValue = "ASC") String sortDirection){
+        return new ResponseEntity<>(pizzaService.getAvailable(page,elements,sortBy,sortDirection), HttpStatus.OK);
     }
 
     //busqueda de una pizza por id

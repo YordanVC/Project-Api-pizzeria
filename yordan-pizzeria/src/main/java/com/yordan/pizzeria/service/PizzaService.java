@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,8 +53,11 @@ public class PizzaService {
     }
 
     //metodo que retorna todas las pizzas activas
-    public List<PizzaEntity> getAvailable(){
-        return this.pizzaRepository.findAllByAvailableTrueOrderByPrice();
+    //modificacion usando PagingAndSortingRepository
+    public Page<PizzaEntity> getAvailable(int page, int elements, String sortBy, String sortDirection){
+        Sort sort=Sort.by(Sort.Direction.fromString(sortDirection),sortBy);
+        Pageable pageRequest= PageRequest.of(page,elements,sort);//sort que incluye ordenamiento y direccion
+        return this.pizzaPagSortRepository.findByAvailableTrue(pageRequest);
     }
 
     //metodo que retorna una piza buscado por id.
