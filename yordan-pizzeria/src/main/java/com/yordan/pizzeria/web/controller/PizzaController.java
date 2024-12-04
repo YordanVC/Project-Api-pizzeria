@@ -23,6 +23,25 @@ public class PizzaController {
         return new ResponseEntity<>(pizzaService.getAll(), HttpStatus.OK);
     }
 
+    //listar todas las pizzas menores a un precio
+    @GetMapping("/lessPrice/{price}")
+    public ResponseEntity<List<PizzaEntity>> getByPriceLessThan(@PathVariable double price){
+        return new ResponseEntity<>(pizzaService.getByPriceLessThan(price), HttpStatus.OK);
+    }
+
+    //listar todas las pizzas que coincidan con el ingrediente buscado
+    @GetMapping("/ingredient/{ingredient}")
+    public ResponseEntity<List<PizzaEntity>> getByIngredient(@PathVariable String ingredient){
+        return new ResponseEntity<>(pizzaService.getByIngredient(ingredient), HttpStatus.OK);
+    }
+
+    //listar todas las pizzas activas
+    @GetMapping("/available")
+    public ResponseEntity<List<PizzaEntity>> getAvailable(){
+        return new ResponseEntity<>(pizzaService.getAvailable(), HttpStatus.OK);
+    }
+
+
     //busqueda de una pizza por id
     @GetMapping("{id}")
     public ResponseEntity<PizzaEntity> getPizza(@PathVariable("id") int idPizza){

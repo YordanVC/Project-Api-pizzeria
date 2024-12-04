@@ -31,10 +31,27 @@ public class PizzaService {
     public List<PizzaEntity> getAll(){
         return this.pizzaRepository.findAll();
     }
+
+    //metodo que retorna todas las pizzas menores a un precio
+    public List<PizzaEntity> getByPriceLessThan(double price){
+        return this.pizzaRepository.findByPriceLessThan(price);
+    }
+
+    //metodo que retorna todas las pizzas que coincida con algun ingrediente
+    public List<PizzaEntity> getByIngredient(String ingredient){
+        return this.pizzaRepository.findAllByAvailableTrueAndDescriptionContainsIgnoreCase(ingredient);
+    }
+
+    //metodo que retorna todas las pizzas activas
+    public List<PizzaEntity> getAvailable(){
+        return this.pizzaRepository.findAllByAvailableTrueOrderByPrice();
+    }
+
     //metodo que retorna una piza buscado por id.
     public Optional<PizzaEntity> getPizza(int idPizza){
         return this.pizzaRepository.findById(idPizza);
     }
+
     //metodo para guardar una pizza
     public PizzaEntity save(PizzaEntity pizza){
         return this.pizzaRepository.save(pizza);
