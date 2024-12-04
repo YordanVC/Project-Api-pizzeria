@@ -3,12 +3,14 @@ package com.yordan.pizzeria.service;
 import com.yordan.pizzeria.persistence.entity.PizzaEntity;
 import com.yordan.pizzeria.persistence.repository.PizzaPagSortRepository;
 import com.yordan.pizzeria.persistence.repository.PizzaRepository;
+import com.yordan.pizzeria.service.dto.updatePizzaPriceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -78,5 +80,10 @@ public class PizzaService {
     //Eliminar una pizza
     public void delete(int idPizza){
         this.pizzaRepository.deleteById(idPizza);
+    }
+    @Transactional
+    //Actualizar el precio de una pizza por ID
+    public void udaptePrice(updatePizzaPriceDto dto){
+        this.pizzaRepository.UpdatePrice(dto);
     }
 }

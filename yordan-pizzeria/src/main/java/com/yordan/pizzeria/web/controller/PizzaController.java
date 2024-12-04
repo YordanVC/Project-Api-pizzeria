@@ -2,6 +2,7 @@ package com.yordan.pizzeria.web.controller;
 
 import com.yordan.pizzeria.persistence.entity.PizzaEntity;
 import com.yordan.pizzeria.service.PizzaService;
+import com.yordan.pizzeria.service.dto.updatePizzaPriceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -70,6 +71,16 @@ public class PizzaController {
             return ResponseEntity.ok(pizzaService.save(pizza));
         }
         return ResponseEntity.badRequest().build();//si ya existe parar la peticion.
+    }
+
+    //Actualizar el precio de una pizza
+    @PutMapping("/price")
+    public ResponseEntity<Void> updatePrice(@RequestBody updatePizzaPriceDto dto){
+        if(this.pizzaService.exists(dto.getIdPizza())){//consultar si existe antes de actualizar
+            this.pizzaService.udaptePrice(dto);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     //Eliminar una pizza
