@@ -4,6 +4,7 @@ import com.yordan.pizzeria.persistence.entity.PizzaEntity;
 import com.yordan.pizzeria.persistence.repository.PizzaPagSortRepository;
 import com.yordan.pizzeria.persistence.repository.PizzaRepository;
 import com.yordan.pizzeria.service.dto.updatePizzaPriceDto;
+import com.yordan.pizzeria.service.exception.EmailApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,9 +82,14 @@ public class PizzaService {
     public void delete(int idPizza){
         this.pizzaRepository.deleteById(idPizza);
     }
-    @Transactional
+
+    @Transactional(noRollbackFor = EmailApiException.class)//no hara rollback anunque ocurra esta excepcion
     //Actualizar el precio de una pizza por ID
     public void udaptePrice(updatePizzaPriceDto dto){
         this.pizzaRepository.UpdatePrice(dto);
+        this.sendEmail();
+    }
+    private void sendEmail(){
+        throw new EmailApiException();
     }
 }
