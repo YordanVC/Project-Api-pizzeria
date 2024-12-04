@@ -34,7 +34,7 @@ public class PizzaService {
 
     //metodo que retorna todas las pizzas menores a un precio
     public List<PizzaEntity> getByPriceLessThan(double price){
-        return this.pizzaRepository.findByPriceLessThan(price);
+        return this.pizzaRepository.findByPriceLessThanEqualOrderByPriceDesc(price);
     }
 
     //metodo que retorna todas las pizzas que coincida con algun ingrediente
