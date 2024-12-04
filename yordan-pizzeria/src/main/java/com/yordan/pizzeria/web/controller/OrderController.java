@@ -22,4 +22,16 @@ public class OrderController {
     public ResponseEntity<List<OrderEntity>> getAll(){
         return new ResponseEntity<>(this.orderService.getAll(), HttpStatus.OK);
     }
+
+    //Endpoint para retornar una lista de ordenes de la dia actual
+    @GetMapping("today")
+    public ResponseEntity<List<OrderEntity>> getTodayOrders(){
+        return new ResponseEntity<>(this.orderService.getTodayOrders(), HttpStatus.OK);
+    }
+
+    //Endpoint para retornar una lista de ordenes de la dia actual
+    @GetMapping("outside")
+    public ResponseEntity<List<OrderEntity>> getOutsideOrders(){
+        return new ResponseEntity<>(this.orderService.getOutsideOrders(), HttpStatus.OK);
+    }
 }
