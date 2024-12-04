@@ -24,7 +24,7 @@ public class PizzaController {
     }
 
     //listar todas las pizzas menores a un precio
-    @GetMapping("/lessPrice/{price}")
+    @GetMapping("/cheapest/{price}")
     public ResponseEntity<List<PizzaEntity>> getByPriceLessThan(@PathVariable double price){
         return new ResponseEntity<>(pizzaService.getByPriceLessThan(price), HttpStatus.OK);
     }
