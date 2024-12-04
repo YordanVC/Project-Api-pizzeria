@@ -1,8 +1,12 @@
 package com.yordan.pizzeria.service;
 
 import com.yordan.pizzeria.persistence.entity.PizzaEntity;
+import com.yordan.pizzeria.persistence.repository.PizzaPagSortRepository;
 import com.yordan.pizzeria.persistence.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,14 +26,19 @@ public class PizzaService {
 //    }
     //Forma con Repository
     private final PizzaRepository pizzaRepository;
+    private final PizzaPagSortRepository pizzaPagSortRepository;
 
     @Autowired
-    public PizzaService(PizzaRepository pizzaRepository) {
+    public PizzaService(PizzaRepository pizzaRepository, PizzaPagSortRepository pizzaPagSortRepository) {
         this.pizzaRepository = pizzaRepository;
+        this.pizzaPagSortRepository = pizzaPagSortRepository;
     }
     //metodo que retorna todas las pizzas
-    public List<PizzaEntity> getAll(){
-        return this.pizzaRepository.findAll();
+    //modificacion usando PagingAndSortingRepository
+    public Page<PizzaEntity> getAll(int page, int elements){
+        //return this.pizzaRepository.findAll();
+        Pageable pageRequest= PageRequest.of(page,elements);
+        return this.pizzaPagSortRepository.findAll(pageRequest);
     }
 
     //metodo que retorna todas las pizzas menores a un precio

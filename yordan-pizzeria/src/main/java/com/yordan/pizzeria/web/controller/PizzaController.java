@@ -3,6 +3,7 @@ package com.yordan.pizzeria.web.controller;
 import com.yordan.pizzeria.persistence.entity.PizzaEntity;
 import com.yordan.pizzeria.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,9 @@ public class PizzaController {
     }
     //listar todas las pizzas
     @GetMapping()
-    public ResponseEntity<List<PizzaEntity>> getAll(){
-        return new ResponseEntity<>(pizzaService.getAll(), HttpStatus.OK);
+    public ResponseEntity<Page<PizzaEntity>> getAll(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "6") int elements){
+        return new ResponseEntity<>(pizzaService.getAll(page, elements), HttpStatus.OK);
     }
 
     //listar todas las pizzas menores a un precio
@@ -40,7 +42,6 @@ public class PizzaController {
     public ResponseEntity<List<PizzaEntity>> getAvailable(){
         return new ResponseEntity<>(pizzaService.getAvailable(), HttpStatus.OK);
     }
-
 
     //busqueda de una pizza por id
     @GetMapping("{id}")
