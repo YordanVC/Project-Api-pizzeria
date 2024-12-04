@@ -26,7 +26,9 @@ public class PizzaController {
     //busqueda de una pizza por id
     @GetMapping("{id}")
     public ResponseEntity<PizzaEntity> getPizza(@PathVariable("id") int idPizza){
-        return new ResponseEntity<>(pizzaService.getPizza(idPizza), HttpStatus.OK);
+        return pizzaService.getPizza(idPizza)
+                .map(pizzaEntity -> new ResponseEntity<>(pizzaEntity,HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     //Guardar una pizza
