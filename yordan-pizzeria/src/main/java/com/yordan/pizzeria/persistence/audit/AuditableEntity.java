@@ -1,6 +1,5 @@
-package com.yordan.pizzeria.persistence.entity;
+package com.yordan.pizzeria.persistence.audit;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import org.springframework.data.annotation.CreatedDate;

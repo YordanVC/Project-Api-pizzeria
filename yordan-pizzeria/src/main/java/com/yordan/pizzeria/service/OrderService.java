@@ -3,10 +3,11 @@ package com.yordan.pizzeria.service;
 import com.yordan.pizzeria.persistence.entity.OrderEntity;
 import com.yordan.pizzeria.persistence.projection.OrderSummary;
 import com.yordan.pizzeria.persistence.repository.OrderRepository;
+import com.yordan.pizzeria.service.dto.RandomOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -46,5 +47,10 @@ public class OrderService {
 
     public OrderSummary getSummary(int orderId){
         return this.orderRepository.findSummary(orderId);
+    }
+    //metodo para guardar una orden de la promocion 20% de descuento sobre una pizza aleatoria.
+    @Transactional
+    public boolean saveRandomOrder(RandomOrderDto dto){
+        return this.orderRepository.saveRandomOrder(dto.getIdCustomer(), dto.getMethod());
     }
 }

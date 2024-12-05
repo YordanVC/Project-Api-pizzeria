@@ -3,12 +3,10 @@ package com.yordan.pizzeria.web.controller;
 import com.yordan.pizzeria.persistence.entity.OrderEntity;
 import com.yordan.pizzeria.persistence.projection.OrderSummary;
 import com.yordan.pizzeria.service.OrderService;
+import com.yordan.pizzeria.service.dto.RandomOrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,5 +45,11 @@ public class OrderController {
     @GetMapping("/outside")
     public ResponseEntity<List<OrderEntity>> getOutsideOrders(){
         return new ResponseEntity<>(this.orderService.getOutsideOrders(), HttpStatus.OK);
+    }
+
+    //Endpoint para promocion de 20%descuento a una orden donde la pizza es aleatoria
+    @PostMapping("/random")
+    public ResponseEntity<Boolean> randomOrder(@RequestBody RandomOrderDto dto) {
+        return new ResponseEntity<>(this.orderService.saveRandomOrder(dto),HttpStatus.OK);
     }
 }
