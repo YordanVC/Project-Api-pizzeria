@@ -14,9 +14,12 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends ListCrudRepository<OrderEntity,Integer> {
     List<OrderEntity> findAllByDateAfter(LocalDateTime date);
+
     List<OrderEntity> findAllByMethodIn(List<String> methods);
+
     @Query(value = "SELECT * FROM pizza_order WHERE id_customer= :id",nativeQuery = true)
     List<OrderEntity> findCustomerOrders(@Param("id") String idCustomer);
+
 
     @Query(value =
             "SELECT po.id_order AS idOrder,cu.name AS customerName, po.date AS orderDate, " +
@@ -28,6 +31,8 @@ public interface OrderRepository extends ListCrudRepository<OrderEntity,Integer>
             "WHERE po.id_order= :orderId " +
             "GROUP BY po.id_order,cu.name,po.date,po.total" ,nativeQuery = true)
     OrderSummary findSummary(@Param("orderId") int orderId);
+
+
     //anotacion para ejecutar storeProcedures
     //en value: se escribe en el nombre del StoreProcedure para hacer su respectivo llamado
     //en outputParameterName: el nombre de la variable que retorna el sp.

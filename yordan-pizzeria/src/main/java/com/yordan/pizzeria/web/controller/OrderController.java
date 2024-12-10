@@ -26,13 +26,27 @@ public class OrderController {
     //Endpoint para retornar una lista de ordenes de un customer
     @GetMapping("/customer/{idCustomer}")
     public ResponseEntity<List<OrderEntity>> getCustomerOrders(@PathVariable String idCustomer){
-        return new ResponseEntity<>(this.orderService.getCustomerOrders(idCustomer), HttpStatus.OK);
+        if(!this.orderService.customerExists(idCustomer)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<OrderEntity> orders = this.orderService.getCustomerOrders(idCustomer);
+
+        if(orders.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     //Endpoint para retornar un summary de una Order
     @GetMapping("/summary/{id}")
-    public ResponseEntity<OrderSummary> getSummaryOrder(@PathVariable int id){
-        return new ResponseEntity<>(this.orderService.getSummary(id), HttpStatus.OK);
+    public ResponseEntity<OrderSummary> getSummaryOrder(@PathVariable int idCustomer){
+        OrderSummary order=this.orderService.getSummary(idCustomer);
+        if(order==null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(order,HttpStatus.OK);
+        //return new ResponseEntity<>(this.orderService.getSummary(id),HttpStatus.OK);
     }
 
     //Endpoint para retornar una lista de ordenes de la dia actual

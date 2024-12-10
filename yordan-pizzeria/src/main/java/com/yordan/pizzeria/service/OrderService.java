@@ -2,8 +2,10 @@ package com.yordan.pizzeria.service;
 
 import com.yordan.pizzeria.persistence.entity.OrderEntity;
 import com.yordan.pizzeria.persistence.projection.OrderSummary;
+import com.yordan.pizzeria.persistence.repository.CustomerRepository;
 import com.yordan.pizzeria.persistence.repository.OrderRepository;
 import com.yordan.pizzeria.service.dto.RandomOrderDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,16 +15,20 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+
     private static final String DELIVERY= "D";
     private static final String CARRYOUT= "C";
     private static final String ON_SITE= "S";
 
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
     }
     //metodo para retornar una lista de ordenes
     public List<OrderEntity> getAll(){
@@ -52,5 +58,8 @@ public class OrderService {
     @Transactional
     public boolean saveRandomOrder(RandomOrderDto dto){
         return this.orderRepository.saveRandomOrder(dto.getIdCustomer(), dto.getMethod());
+    }
+    public boolean customerExists(String customerId){
+        return this.customerRepository.findById(customerId).isPresent();
     }
 }
