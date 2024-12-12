@@ -33,6 +33,6 @@ public class AuthController {
         System.out.println(authentication.getPrincipal());
 
         String jwt=this.jwtUtil.create(loginDto.getUsername());
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt).build();
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwt).build();
     }
 }

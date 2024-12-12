@@ -9,18 +9,23 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 
 @Configuration
 public class SecurityConfig {
-    @Autowired
-    private final CorsConfig corsConfig;
 
-    public SecurityConfig(CorsConfig corsConfig) {
+    private final CorsConfig corsConfig;
+    private final JwtFilter jwtFilter;
+    @Autowired
+    public SecurityConfig(CorsConfig corsConfig, JwtFilter jwtFilter) {
         this.corsConfig = corsConfig;
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean
@@ -28,15 +33,18 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Deshabilita CSRF
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
+                .sessionManagement(session->session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/Api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"Api/pizzas/**").hasAnyRole("ADMIN","CUSTOMER")
                         .requestMatchers(HttpMethod.POST,"Api/pizzas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
+                        .requestMatchers("Api/orders/random").hasAuthority("random_order")
                         .requestMatchers("Api/orders/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults()); // Autenticación básica
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
